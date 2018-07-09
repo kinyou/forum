@@ -22,4 +22,13 @@ class Thread extends Model
     {
         return '/threads/' . $this->id;
     }
+
+    /**
+     * 定义关联关系 一个帖子有多个回复
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function replies()
+    {
+        return $this->hasMany(Reply::class);
+    }
 }
