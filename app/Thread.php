@@ -11,5 +11,15 @@ class Thread extends Model
      * @var array
      */
     protected $guarded = [];
-    //
+
+
+    /**
+     * 生成单个帖子的url地址
+     * 备注:这里可以访问单个模型的任意属性[也就是数据库中表的字段]
+     * @return string
+     */
+    public function path()
+    {
+        return '/threads/' . $this->id;
+    }
 }
