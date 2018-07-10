@@ -20,7 +20,7 @@ class Thread extends Model
      */
     public function path()
     {
-        return '/threads/' . $this->id;
+        return '/threads/' . $this->channel->slug . '/' .  $this->id;
     }
 
     /**
@@ -50,5 +50,16 @@ class Thread extends Model
     {
         //调用$this->>replies()的关联关系方法,可返回一个Reply的model
         $this->replies()->create($reply);
+    }
+
+
+    /**
+     * 定义关联关系一篇帖子属于一个分类
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function channel()
+    {
+        return $this->belongsTo(Channel::class);
+
     }
 }

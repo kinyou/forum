@@ -40,13 +40,12 @@ class ParticipateInForumTest extends TestCase
      */
     public function unauthenticated_user_may_no_add_replies()
     {
-        //因为先走的是构造函数,所以认证不通过就会抛异常
-        $this->expectException(AuthenticationException::class);
-
         $thread = create(Thread::class);
-
         $reply = create(Reply::class);
 
-        $this->post($thread->path() . '/replies',$reply->toArray());
+        //未登陆的用户进行回复,跳转到登陆页面
+        $this->withExceptionHandling()
+            ->post($thread->path() . '/replies',$reply->toArray())
+            ->assertRedirect('/login');
     }
 }

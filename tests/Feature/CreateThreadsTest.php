@@ -22,7 +22,7 @@ class CreateThreadsTest extends TestCase
         //1.创建一个登陆的用户
         $this->signIn(create(User::class));
         //2.点击发布按钮创建一个新的帖子
-        $thread = make(Thread::class);
+        $thread = create(Thread::class);
         $this->post('/threads',$thread->toArray());
         //3.然后访问帖子,可以成功访问到刚才创建的帖子
         $this->get($thread->path())
@@ -34,23 +34,14 @@ class CreateThreadsTest extends TestCase
     /**
      * @test
      */
-    public function guests_may_not_create_threads()
-    {
-        $this->expectException(AuthenticationException::class);
-
-        $thread = make(Thread::class);
-
-        $this->post('/threads',$thread->toArray());
-    }
-
-
-    /**
-     * @test
-     */
     public function guests_may_not_see_the_create_thread_page()
     {
-        $this->withExceptionHandling()
-            ->get('/threads/create')
+        $this->withExceptionHandling();
+
+        $this->get('/threads/create')
+            ->assertRedirect('/login');
+
+        $this->post('/threads')
             ->assertRedirect('/login');
     }
 }

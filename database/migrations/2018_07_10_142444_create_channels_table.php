@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateThreadsTable extends Migration
+class CreateChannelsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,10 @@ class CreateThreadsTable extends Migration
      */
     public function up()
     {
-        Schema::create('threads', function (Blueprint $table) {
+        Schema::create('channels', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('user_id')->comment('用户id');
-            $table->integer('channel_id')->comment('分类id');
-            $table->string('title')->comment('帖子标题');
-            $table->text('body')->comment('帖子内容');
+            $table->string('name',50)->comment('分类的名称');
+            $table->string('slug',50)->comment('分类的别名');
             $table->timestamps();
         });
     }
@@ -30,6 +28,6 @@ class CreateThreadsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('threads');
+        Schema::dropIfExists('channels');
     }
 }
