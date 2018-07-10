@@ -29,7 +29,11 @@
     "autoload-dev": {
         "psr-4": {
             "Tests\\": "tests/"
-        }
+        },
+        "file":[
+            "tests/utilities/functions.php"
+        ]
+
     },
     "extra": {
         "laravel": {
