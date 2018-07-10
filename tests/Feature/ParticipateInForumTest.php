@@ -5,7 +5,6 @@ namespace Tests\Feature;
 use App\Reply;
 use App\Thread;
 use App\User;
-use Illuminate\Auth\AuthenticationException;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -47,5 +46,21 @@ class ParticipateInForumTest extends TestCase
         $this->withExceptionHandling()
             ->post($thread->path() . '/replies',$reply->toArray())
             ->assertRedirect('/login');
+    }
+
+
+    /**
+     * @test
+     */
+    public function a_reply_requires_a_body()
+    {
+        $this->withExceptionHandling()->signIn(create(User::class));
+
+        $thread = create(Thread::class);
+        $reply = make(Reply::class,['body'=>null]);
+
+        $this->post($thread->path() . '/replies',$reply->toArray())
+            ->assertSessionHasErrors('body');
+        
     }
 }

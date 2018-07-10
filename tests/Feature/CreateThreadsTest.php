@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Channel;
 use App\Thread;
 use App\User;
 use Illuminate\Auth\AuthenticationException;
@@ -22,10 +23,12 @@ class CreateThreadsTest extends TestCase
         //1.创建一个登陆的用户
         $this->signIn(create(User::class));
         //2.点击发布按钮创建一个新的帖子
-        $thread = create(Thread::class);
-        $this->post('/threads',$thread->toArray());
+        $thread = make(Thread::class);
+        $response = $this->post('/threads',$thread->toArray());
+        //2.1$response 是TestResponse的实例,而$response->headers->get('location')可以等到一个
+        //http://localhost/threads/consectetur/1这样的url
         //3.然后访问帖子,可以成功访问到刚才创建的帖子
-        $this->get($thread->path())
+        $this->get($response->headers->get('location'))
             ->assertSee($thread->title)
             ->assertSee($thread->body);
     }
@@ -43,5 +46,54 @@ class CreateThreadsTest extends TestCase
 
         $this->post('/threads')
             ->assertRedirect('/login');
+    }
+
+    /**
+     * @test
+     */
+    public function a_thread_requires_a_title()
+    {
+        //验证要填充的字段
+        $this->publishThread(['title'=>null])
+            ->assertSessionHasErrors('title');
+    }
+
+
+    /**
+     * @test
+     */
+    public function a_thread_requires_a_body()
+    {
+        $this->publishThread(['body'=>null])
+            ->assertSessionHasErrors('body');
+    }
+
+
+    /**
+     * @test
+     */
+    public function a_thread_requires_a_channel()
+    {
+        factory(Channel::class,2)->create();
+
+        $this->publishThread(['channel_id'=>null])
+            ->assertSessionHasErrors('channel_id');
+
+        $this->publishThread(['channel_id'=>-99])
+            ->assertSessionHasErrors('channel_id');
+    }
+
+    /**
+     * 提取的公共方法
+     * @param array $overrides
+     * @return \Illuminate\Foundation\Testing\TestResponse
+     */
+    public function publishThread($overrides = [])
+    {
+        $this->withExceptionHandling()->signIn(create(User::class));
+        $thread = make(Thread::class,$overrides);
+        return $this->post('/threads',$thread->toArray());
+
+        
     }
 }

@@ -41,6 +41,10 @@ class ReplyController extends Controller
      */
     public function store($channelId,Thread $thread,Request $request)
     {
+        $this->validate($request,[
+            'body'=>'required'
+        ]);
+
         $thread->addReply([
             'body'=>$request->input('body'),
             'user_id'=>auth()->id()
