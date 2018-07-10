@@ -21,3 +21,6 @@ Route::get('/home', 'HomeController@index')->name('home');
 
 Route::get('/threads','ThreadController@index');
 Route::get('/threads/{thread}','ThreadController@show');
+
+//保存帖子的回复
+Route::post('/threads/{thread}/replies','ReplyController@store');

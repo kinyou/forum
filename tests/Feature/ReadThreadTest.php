@@ -40,7 +40,7 @@ class ReadThreadTest extends TestCase
     public function a_user_can_read_a_single_thread()
     {
 
-        $this->get('/threads/' . $this->thread->id)
+        $this->get($this->thread->path())
             ->assertStatus(200)
             ->assertSeeText($this->thread->title);
     }
@@ -56,7 +56,7 @@ class ReadThreadTest extends TestCase
         //2.并且该Thread拥有回复
         //3.那么当我们看到Thread时也能看到回复
 
-        $this->get('/threads/' . $this->thread->id)
+        $this->get($this->thread->path())
             ->assertStatus(200)
             ->assertSeeText($reply->body);
     }

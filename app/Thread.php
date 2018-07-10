@@ -31,4 +31,24 @@ class Thread extends Model
     {
         return $this->hasMany(Reply::class);
     }
+
+    /**
+     * 定义关联关系,一个帖子属于具体的某一个用户
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function author()
+    {
+        return $this->belongsTo(User::class,'user_id');
+
+    }
+
+    /**
+     * 添加帖子回复
+     * @param array $reply
+     */
+    public function addReply(array $reply)
+    {
+        //调用$this->>replies()的关联关系方法,可返回一个Reply的model
+        $this->replies()->create($reply);
+    }
 }
