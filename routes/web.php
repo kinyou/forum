@@ -24,3 +24,5 @@ Route::get('/threads/{thread}','ThreadController@show');
 
 //保存帖子的回复
 Route::post('/threads/{thread}/replies','ReplyController@store');
+//创建帖子
+Route::post('/threads','ThreadController@store');
