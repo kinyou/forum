@@ -10,7 +10,7 @@ class ThreadController extends Controller
     public function __construct()
     {
         //只有保存需要登录
-        $this->middleware('auth')->only('store');
+        $this->middleware('auth')->except(['show','index']);
     }
 
     /**
@@ -32,7 +32,7 @@ class ThreadController extends Controller
      */
     public function create()
     {
-        //
+        return view('threads.create');
     }
 
     /**
