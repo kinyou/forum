@@ -20,9 +20,9 @@ class CreateThreadsTest extends TestCase
     public function an_authenticated_user_can_create_new_forum_threads()
     {
         //1.创建一个登陆的用户
-        $this->actingAs(factory(User::class)->create());
+        $this->signIn(create(User::class));
         //2.点击发布按钮创建一个新的帖子
-        $thread = factory(Thread::class)->make();
+        $thread = make(Thread::class);
         $this->post('/threads',$thread->toArray());
         //3.然后访问帖子,可以成功访问到刚才创建的帖子
         $this->get($thread->path())
@@ -38,7 +38,7 @@ class CreateThreadsTest extends TestCase
     {
         $this->expectException(AuthenticationException::class);
 
-        $thread = factory(Thread::class)->make();
+        $thread = make(Thread::class);
 
         $this->post('/threads',$thread->toArray());
     }
