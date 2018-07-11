@@ -12,12 +12,15 @@
                     <div class="panel-body">{{$thread->body}}</div>
                 </div>
 
+                <!-- 回复 -->
                 @foreach($replies as $reply)
                     @include('threads.reply')
                 @endforeach
 
+                <!-- 分页 -->
                 {{$replies->links()}}
 
+                <!-- 留言框 -->
                 @if(auth()->check())
                 <form action="{{$thread->path() . '/replies'}}" method="post">
                     {{csrf_field()}}
