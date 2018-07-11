@@ -62,4 +62,16 @@ class Thread extends Model
         return $this->belongsTo(Channel::class);
 
     }
+
+    /**
+     * laravel本地作用域的使用-只需简单在对应 Eloquent 模型方法前加上一个 scope 前缀,作用域总是返回查询构建器
+     * @param $query
+     * @param $filters
+     * @return mixed
+     */
+    public function scopeFilter($query,$filters)
+    {
+        return $filters->apply($query);
+    }
+
 }

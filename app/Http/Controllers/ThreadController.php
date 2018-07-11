@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Channel;
+use App\Filters\ThreadsFilters;
 use App\Thread;
 use App\User;
 use Illuminate\Http\Request;
@@ -20,23 +21,10 @@ class ThreadController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Channel $channel)
+    public function index(Channel $channel,ThreadsFilters $filters)
     {
-        //是否存在分类
-        if ($channel->exists) {
-            $threads = $channel->threads()->latest();
-        } else {
-            $threads = Thread::latest();
-        }
 
-        //是否根据用户名搜索
-        if ($username = request('by')) {
-            $user = User::where('name',$username)->firstOrFail();
-
-            $threads->where('user_id',$user->id);
-        }
-
-        $threads = $threads->get();
+        $threads = $this->getThreads($channel,$filters);
 
         return view('threads.index',compact('threads'));
     }
@@ -119,5 +107,24 @@ class ThreadController extends Controller
     public function destroy(Thread $thread)
     {
         //
+    }
+
+    /**
+     * 获取对应的搜索条件帖子
+     * @param Channel $channel
+     * @param ThreadsFilters $filters
+     * @return mixed
+     */
+    protected function getThreads(Channel $channel,ThreadsFilters $filters)
+    {
+        //使用了本地作用域特性
+        $threads = Thread::latest()->filter($filters);
+
+        //是否存在分类
+        if ($channel->exists) {
+            $threads = $threads->where('channel_id',$channel->id);
+        }
+
+        return $threads->get();
     }
 }
