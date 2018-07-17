@@ -11,7 +11,7 @@ use App\User;
 
 class ThreadsFilters extends AbstractFilter {
 
-    protected $filters = ['by'];
+    protected $filters = ['by','popularity'];
 
     /**
      * 每一搜索条件拆分成为一个方法
@@ -24,6 +24,18 @@ class ThreadsFilters extends AbstractFilter {
         $user = User::where('name',$username)->firstOrFail();
 
         return $this->builder->where('user_id',$user->id);
+    }
+
+
+    /**
+     * 按照评论数排序
+     * @return mixed
+     */
+    public function popularity() {
+        //清空其他的排序条件
+        $this->builder->getQuery()->orders = [];
+
+        return $this->builder->orderBy('replies_count','desc');
     }
 
 

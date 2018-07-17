@@ -10,9 +10,17 @@
                     <div class="panel-body">
                         @foreach($threads as $thread)
                             <article>
-                                <a class="panel-title" href="{{$thread->path()}}">
-                                    <h4>{{$thread->title}}</h4>
-                                </a>
+                                <div class="level">
+                                   <h4 class="flex">
+                                       <a href="{{$thread->path()}}">
+                                           {{$thread->title}}
+                                       </a>
+                                   </h4>
+
+                                    <a href="{{$thread->path()}}">
+                                        {{$thread->replies_count}} {{str_plural('reply',$thread->replies_count)}}
+                                    </a>
+                                </div>
 
                                 <div>{{$thread->body}}</div>
                                 <hr>
