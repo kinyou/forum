@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Reply;
+use foo\bar;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -20,6 +21,8 @@ class FavoriteController extends Controller
      */
     public function store(Reply $reply)
     {
-        return $reply->favorite();
+        $reply->favorite();
+        //跳回原来的地址
+        return back();
     }
 }

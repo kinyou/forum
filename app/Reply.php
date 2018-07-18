@@ -45,5 +45,14 @@ class Reply extends Model
             return $this->favorites()->create($attributes);
         }
     }
+
+    /**
+     * 判断用户是否点过赞
+     * @return bool
+     */
+    public function isFavorited()
+    {
+        return $this->favorites()->where(['user_id'=>auth()->id()])->exists();
+    }
 }
 

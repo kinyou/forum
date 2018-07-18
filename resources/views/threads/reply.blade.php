@@ -1,9 +1,23 @@
 <div class="panel panel-default">
 
     <div class="panel-heading">
-        <a href="#">{{$reply->owner->name}}</a>
-        回复于
-        {{$reply->created_at->diffForHumans()}}
+        <div class="level">
+            <h5 class="flex">
+                <a href="#">{{$reply->owner->name}}</a>
+                回复于
+                {{$reply->created_at->diffForHumans()}}
+            </h5>
+
+            <div>
+                <form method="post" action="/replies/{{$reply->id}}/favorites">
+                    {{csrf_field()}}
+                    <!--如果已经点过赞就不显示点赞按钮-->
+                    <button type="submit" class="btn btn-default" {{$reply->isFavorited() ? 'disabled' : ''}}>
+                        {{$reply->favorites()->count()}} {{str_plural('Favorite',$reply->favorites()->count())}}
+                    </button>
+                </form>
+            </div>
+        </div>
     </div>
     <div class="panel-body">{{$reply->body}}</div>
 </div>
