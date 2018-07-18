@@ -35,3 +35,6 @@ Route::get('/threads/{thread}/edit', 'ThreadController@edit')->name('thread.edit
 Route::patch('/threads/{thread}', 'ThreadController@update')->name('thread.update');
 //删除帖子
 Route::delete('/threads/{thread}', 'ThreadController@destroy')->name('thread.destroy');
+
+
+Route::post('replies/{reply}/favorites','FavoriteController@store');

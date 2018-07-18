@@ -99,13 +99,15 @@ class ReadThreadTest extends TestCase
      */
     public function a_user_can_filter_threads_by_popularity()
     {
-        //
+        //创建一个有两个回复的帖子
         $threadWithTwoReplies = create(Thread::class);
         create(Reply::class,['thread_id'=>$threadWithTwoReplies->id],2);
 
+        //创建一个有三个回复的帖子
         $threadWithThreeReplies = create(Thread::class);
         create(Reply::class,['thread_id'=>$threadWithThreeReplies->id],3);
 
+        //一个没有回复的帖子
         $threadWithNoReplies = $this->thread;
 
         $response = $this->getJson('threads?popularity=1')->json();
