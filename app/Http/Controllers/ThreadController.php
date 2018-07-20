@@ -78,7 +78,7 @@ class ThreadController extends Controller
     {
         return view('threads.show',[
             'thread'=>$thread,
-            'replies'=>$thread->replies()->paginate(2)
+            'replies'=>$thread->replies()->paginate(15)
         ]);
     }
 
@@ -125,7 +125,7 @@ class ThreadController extends Controller
     protected function getThreads(Channel $channel,ThreadsFilters $filters)
     {
         //使用了本地作用域特性
-        $threads = Thread::latest()->filter($filters);
+        $threads = Thread::with('channel')->latest()->filter($filters);
 
         //是否存在分类
         if ($channel->exists) {
