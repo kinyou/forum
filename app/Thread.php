@@ -12,6 +12,11 @@ class Thread extends Model
      */
     protected $guarded = [];
 
+    /**
+     * 查询作用域和全局作用域的特性使用
+     * @var array
+     */
+    protected $with = ['author'];
 
     /**
      * 应用全局作用域

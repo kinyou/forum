@@ -6,11 +6,18 @@ use Illuminate\Database\Eloquent\Model;
 
 class Reply extends Model
 {
+    use Favoritable;
     /**
      * 表示所有字段都可以填充
      * @var array
      */
     protected $guarded = [];
+
+    /**
+     * 在模型关联关系中渴望式的加载with数组中的管理关系
+     * @var array
+     */
+    protected $with = ['owner','favorites'];
 
     /**
      * 定义关联关系 一个回复属于具体的某一个用户
@@ -22,37 +29,6 @@ class Reply extends Model
         return $this->belongsTo(User::class,'user_id');
     }
 
-    /**
-     * 定义多对多关联一个喜欢既可以属于帖子或者评论
-     * @return \Illuminate\Database\Eloquent\Relations\MorphMany
-     */
-    public function favorites()
-    {
-        return $this->morphMany(Favorite::class,'favorited');
-    }
 
-    /**
-     * 保存点赞
-     * @return Model
-     */
-    public function favorite()
-    {
-        $attributes = ['user_id'=>auth()->id()];
-
-        //一个同时对一个帖子点一次赞
-        if (! $this->favorites()->where($attributes)->exists()) {
-
-            return $this->favorites()->create($attributes);
-        }
-    }
-
-    /**
-     * 判断用户是否点过赞
-     * @return bool
-     */
-    public function isFavorited()
-    {
-        return $this->favorites()->where(['user_id'=>auth()->id()])->exists();
-    }
 }
 
