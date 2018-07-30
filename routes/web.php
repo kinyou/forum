@@ -38,3 +38,6 @@ Route::delete('/threads/{thread}', 'ThreadController@destroy')->name('thread.des
 
 
 Route::post('replies/{reply}/favorites','FavoriteController@store');
+
+//个人主页
+Route::get('/profile/{user}','ProfileController@show')->name('profile');

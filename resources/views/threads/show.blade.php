@@ -6,7 +6,7 @@
             <div class="col-md-8">
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                        <a href="#">{{$thread->author->name}}</a> 发表了:
+                        <a href="{{route('profile',$thread->author)}}">{{$thread->author->name}}</a> 发表了:
                         {{$thread->title}}
                     </div>
                     <div class="panel-body">{{$thread->body}}</div>
