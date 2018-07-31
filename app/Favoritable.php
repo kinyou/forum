@@ -37,7 +37,7 @@ trait Favoritable {
     }
 
 
-    public function getFavoritersCountAttribute()
+    public function getFavoritesCountAttribute()
     {
         return $this->favorites->count();
     }

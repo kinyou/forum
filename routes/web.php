@@ -41,3 +41,5 @@ Route::post('replies/{reply}/favorites','FavoriteController@store');
 
 //个人主页
 Route::get('/profile/{user}','ProfileController@show')->name('profile');
+//删除帖子
+Route::delete('/threads/{channel}/{thread}','ThreadController@destroy');

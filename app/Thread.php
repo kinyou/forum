@@ -28,6 +28,11 @@ class Thread extends Model
         static::addGlobalScope('replyCount',function ($builder){
            $builder->withCount('replies');
         });
+
+        //观察器删除数据
+        static::deleting(function ($thread){
+            $thread->replies()->delete();
+        });
     }
 
     /**
@@ -46,9 +51,9 @@ class Thread extends Model
      */
     public function replies()
     {
-        return $this->hasMany(Reply::class)
-            ->withCount('favorites')//关联计数特性的使用
-            ->with('owner'); //预加载
+        return $this->hasMany(Reply::class);
+            //->withCount('favorites');//关联计数特性的使用
+            //->with('owner'); //预加载
     }
 
     /**

@@ -3,9 +3,11 @@
 namespace Tests\Feature;
 
 use App\Channel;
+use App\Reply;
 use App\Thread;
 use App\User;
 use Illuminate\Auth\AuthenticationException;
+use Illuminate\Foundation\Testing\Concerns\InteractsWithDatabase;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -84,6 +86,41 @@ class CreateThreadsTest extends TestCase
     }
 
     /**
+     * @test
+     * @return void
+     */
+    public function a_thread_can_be_deleted()
+    {
+        $this->signIn();
+
+        $thread = create(Thread::class);
+        $reply = create(Reply::class,['thread_id'=>$thread->id]);
+
+        $response = $this->json('DELETE',$thread->path());
+        $response->assertStatus(204);
+
+        //判断threads表中是否有对应的数据
+        $this->assertDatabaseMissing('threads',['id'=>$thread->id]);
+        $this->assertDatabaseMissing('replies',['id'=>$reply->id]);
+    }
+
+    /**
+     * @test
+     *
+     * @return void
+     */
+    public function guests_cannot_delete_threads()
+    {
+        $this->withExceptionHandling();
+
+        $thread = create(Thread::class);
+
+        $response = $this->delete($thread->path());
+
+        $response->assertRedirect('/login');
+    }
+
+    /**
      * 提取的公共方法
      * @param array $overrides
      * @return \Illuminate\Foundation\Testing\TestResponse
@@ -96,4 +133,5 @@ class CreateThreadsTest extends TestCase
 
         
     }
+
 }

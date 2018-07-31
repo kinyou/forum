@@ -6,8 +6,19 @@
             <div class="col-md-8">
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                        <a href="{{route('profile',$thread->author)}}">{{$thread->author->name}}</a> 发表了:
-                        {{$thread->title}}
+
+                        <div class="level">
+                            <span class="flex">
+                                <a href="{{route('profile',$thread->author)}}">{{$thread->author->name}}</a> 发表了:{{$thread->title}}
+                            </span>
+
+                            <form action="{{$thread->path()}}" method="post">
+                                {{csrf_field()}}
+                                {{method_field('DELETE')}}
+                                <button class="btn btn-link" type="submit">Delete Thread</button>
+                            </form>
+                        </div>
+
                     </div>
                     <div class="panel-body">{{$thread->body}}</div>
                 </div>
