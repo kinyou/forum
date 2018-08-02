@@ -106,20 +106,30 @@ class ThreadController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * 删除帖子
      *
-     * @param  \App\Thread  $thread
-     * @return \Illuminate\Http\Response
+     * @param        $channel
+     * @param Thread $thread
+     *
+     * @throws \Exception
+     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector|\Symfony\Component\HttpFoundation\Response
      */
     public function destroy($channel,Thread $thread)
     {
+        //应用授权策略
+        $this->authorize('update',$thread);
+
+        if ($thread->user_id != auth()->id()) {
+            abort(403,'You do not have permission to do this');
+        }
+
         $thread->delete();
 
         if (request()->wantsJson()) {
             return response([],204);
         }
 
-        return response([],204);
+        return redirect('/threads');
     }
 
     /**

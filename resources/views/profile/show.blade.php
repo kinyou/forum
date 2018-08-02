@@ -3,11 +3,11 @@
 @section('content')
     <div class="container">
         <div class="row">
-            <div class="col-md-offset-2">
+            <div class="col-md-8 col-md-offset-2">
                 <div class="page-header">
                     <h1>
                         {{$profileUser->name}}
-                        <small>注册于 {{$profileUser->created_at->diffForHumans()}}</small>
+                        <small>Since {{$profileUser->created_at->diffForHumans()}}</small>
                     </h1>
                 </div>
 
@@ -16,7 +16,8 @@
                         <div class="panel-heading">
                             <div class="level">
                                 <span class="flex">
-                                    <a href="{{route('profile',$thread->author)}}">{{$thread->author->name}}</a>发表于{{$thread->title}}
+                                    <a href="{{route('profile',$thread->author)}}">{{$thread->author->name}}</a>
+                                    <a href="{{$thread->path()}}">{{$thread->title}}</a>
                                 </span>
 
                                 <span>{{$thread->created_at->diffForHumans()}}</span>

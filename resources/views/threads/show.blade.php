@@ -11,12 +11,13 @@
                             <span class="flex">
                                 <a href="{{route('profile',$thread->author)}}">{{$thread->author->name}}</a> 发表了:{{$thread->title}}
                             </span>
-
+                            @can('update',$thread)
                             <form action="{{$thread->path()}}" method="post">
                                 {{csrf_field()}}
                                 {{method_field('DELETE')}}
                                 <button class="btn btn-link" type="submit">Delete Thread</button>
                             </form>
+                            @endcan
                         </div>
 
                     </div>
