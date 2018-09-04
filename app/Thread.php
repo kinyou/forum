@@ -6,6 +6,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class Thread extends Model
 {
+    //导入对应的trait
+    use RecordsActivity;
+
     /**
      * 表示所有字段都可以填充
      * @var array
@@ -33,6 +36,7 @@ class Thread extends Model
         static::deleting(function ($thread){
             $thread->replies()->delete();
         });
+
     }
 
     /**

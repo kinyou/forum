@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Reply extends Model
 {
-    use Favoritable;
+    use Favoritable,RecordsActivity;
     /**
      * 表示所有字段都可以填充
      * @var array
